@@ -114,7 +114,8 @@ POST /api/v1/auth/login
 Response:
 ```json
 {
-  "access_token": "YOUR_TOKEN_HERE"
+    "user":{name,email...}
+  "token": "YOUR_TOKEN_HERE"
 }
 ```
 
