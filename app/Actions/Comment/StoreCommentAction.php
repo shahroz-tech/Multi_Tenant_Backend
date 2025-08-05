@@ -8,7 +8,7 @@ use App\Models\Comment;
 use App\Services\ActivityLogService;
 use Illuminate\Support\Facades\Auth;
 
-class CreateCommentAction
+class StoreCommentAction
 {
     protected $activityLogService;
 
@@ -17,7 +17,7 @@ class CreateCommentAction
         $this->activityLogService = $activityLogService;
     }
 
-    public function execute(array $validated): Comment
+    public function execute(array $validated)
     {
         $comment = Comment::create([
             'task_id' => $validated["task_id"],
@@ -29,6 +29,6 @@ class CreateCommentAction
 
         event(new CommentAddedEvent($comment));
 
-        return $comment;
+        return response()->json($comment);
     }
 }

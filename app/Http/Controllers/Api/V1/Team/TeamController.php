@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1\Team;
 
-use App\Actions\Team\CreateTeamAction;
+use App\Actions\Team\StoreTeamAction;
 use App\Actions\Team\DeleteTeamAction;
 use App\Actions\Team\RestoreTeamAction;
 use App\Actions\Team\UpdateTeamAction;
@@ -16,10 +16,10 @@ class TeamController extends Controller
 {
     public function index()
     {
-        return Team::with('users', 'owner')->get();
+        return auth()->user()->teams;
     }
 
-    public function store(Request $request, CreateTeamAction $action)
+    public function store(Request $request, StoreTeamAction $action)
     {
         $validator = Validator::make($request->all(), [
             'team_name' => 'required|string|max:255',

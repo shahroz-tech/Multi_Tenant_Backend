@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api\V1\Project;
 
+use App\Actions\Project\DeleteProjectAction;
+use App\Actions\Project\RestoreProjectAction;
 use App\Actions\Project\StoreProjectAction;
 use App\Actions\Project\UpdateProjectAction;
 use App\Events\ProjectUpdatedEvent;
@@ -15,6 +17,17 @@ use Illuminate\Support\Facades\Validator;
 
 class ProjectController extends Controller
 {
+
+    public function index()
+    {
+        return auth()->user()->projects;
+    }
+
+    public function show(Request $request, Project $project)
+    {
+        return auth()->user()->projects()->where('id',$project->id)->first();
+    }
+
     public function store(Request $request, StoreProjectAction $storeAction, ActivityLogService $log)
     {
         $validated = $request->validate([

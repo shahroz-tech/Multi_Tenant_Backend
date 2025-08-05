@@ -19,7 +19,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::with('teams','tasks','comments')->get();
+        return User::with('teams','tasks','comments','projects')->get();
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1\Task;
 use App\Actions\Task\DeleteTaskAction;
 use App\Actions\Task\RestoreTaskAction;
 use App\Actions\Task\StoreTaskAction;
+use App\Actions\Task\SearchTaskAction;
 use App\Actions\Task\UpdateTaskAction;
 use App\Http\Controllers\Controller;
 use App\Models\Task;
@@ -13,6 +14,15 @@ use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
 {
+    public function index(){
+        return auth()->user()->tasks;
+    }
+
+    public function  show(Task $task)
+    {
+        return auth()->user()->tasks()->find($task);
+    }
+
     public function store(Request $request, StoreTaskAction $storeTaskAction)
     {
         $task = $storeTaskAction->handle($request);
@@ -41,5 +51,14 @@ class TaskController extends Controller
         $task = $restoreTaskAction->handle($id);
 
         return response()->json(['message' => 'Task restored successfully.']);
+    }
+
+    public function search(Request $request,SearchTaskAction $searchTaskAction)
+    {
+        $query = $request->input('query');
+
+        $tasks = $searchTaskAction->execute($query);
+
+        return response($tasks);
     }
 }

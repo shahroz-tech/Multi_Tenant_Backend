@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Team;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,6 +19,7 @@ class ProjectFactory extends Factory
     public function definition(): array
     {
         return [
+            'user_id'=>User::factory(),
             'team_id' => Team::factory(), // default for standalone testing
             'project_name' => $this->faker->jobTitle(),
             'project_description' => fake()->catchPhrase(),

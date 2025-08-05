@@ -15,7 +15,7 @@ class RegisterUserAction
             'password' => Hash::make($data['password']),
         ]);
 
-        $token = $user->createToken('api_token')->plainTextToken;
+        $token = $user->createToken('auth_token')->plainTextToken;
 
         return ['user' => $user, 'token' => $token];
     }

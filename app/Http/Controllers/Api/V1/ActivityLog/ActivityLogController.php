@@ -11,12 +11,11 @@ class ActivityLogController extends Controller
     public function index($projectId)
     {
         $logs = ActivityLog::where(function ($query) use ($projectId) {
-            $query->where('target_type', 'Project')
+            $query
+//                ->where('target_type', 'Project')
                 ->where('target_id', $projectId);
-        })
-//            ->orWhereIn('target_type', ['Task', 'Comment']) // optional if you want related
-            ->latest()
-            ->get();
+        }) ->where('user_id', auth()->id())
+            ->get()->all();
 
         return response()->json($logs);
     }

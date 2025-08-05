@@ -6,7 +6,7 @@ namespace App\Actions\Team;
 use App\Models\Team;
 use Illuminate\Support\Facades\Auth;
 
-class CreateTeamAction
+class StoreTeamAction
 {
     public function execute(array $validated): Team
     {

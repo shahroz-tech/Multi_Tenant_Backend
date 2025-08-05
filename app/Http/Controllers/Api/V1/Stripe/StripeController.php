@@ -27,7 +27,8 @@ class StripeController extends Controller
 
     public function show(Request $request, ShowUserSubscriptionAction $showAction)
     {
-        return response()->json($showAction->execute($request));
+        $subscription = $showAction->execute($request);
+        return response()->json($subscription);
     }
 
     public function cancel(Request $request, CancelUserSubscriptionAction $cancelAction)

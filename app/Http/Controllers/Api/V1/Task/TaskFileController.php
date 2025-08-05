@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Api\V1\Task;
 
+use App\Actions\Task\TaskFile\DeleteTaskFileAction;
+use App\Actions\Task\TaskFile\RestoreTaskFileAction;
+use App\Actions\Task\TaskFile\UploadTaskFileAction;
 use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
 use App\Models\File;
@@ -12,28 +15,13 @@ use Illuminate\Support\Facades\Storage;
 
 class TaskFileController extends Controller
 {
-    public function upload(Request $request, Task $task)
+    public function upload(Request $request, Task $task, UploadTaskFileAction $action)
     {
         $request->validate([
-            'file' => 'required|file|max:10240', // Max 10MB
+            'file' => 'required|file|max:10240',
         ]);
 
-        $uploadedFile = $request->file('file');
-        $path = $uploadedFile->store("tasks/{$task->id}", 'public');
-
-        $file = $task->files()->create([
-            'file_path' => $path,
-            'original_name' => $uploadedFile->getClientOriginalName(),
-        ]);
-
-        //Activity log
-        ActivityLog::create([
-            'user_id' => Auth::id(),
-            'action_type' => 'uploaded',
-            'target_type' => 'File',
-            'target_id' => $file->id,
-        ]);
-
+        $file = $action->execute($request, $task);
 
         return response()->json([
             'message' => 'File uploaded',
@@ -56,33 +44,19 @@ class TaskFileController extends Controller
         }));
     }
 
-    public function destroy(Task $task, File $file)
+    public function destroy(Task $task, File $file, DeleteTaskFileAction $action)
     {
-        if ($file->task_id !== $task->id) {
-            return response()->json(['message' => 'Invalid file for task'], 403);
-        }
-
-        Storage::disk('public')->delete($file->file_path);
-        $file->delete();
-
-        //Activity log
-        ActivityLog::create([
-            'user_id' => Auth::id(),
-            'action_type' => 'deleted',
-            'target_type' => 'File',
-            'target_id' => $file->id,
-        ]);
-
+        $action->execute($task, $file);
 
         return response()->json(['message' => 'File deleted']);
     }
 
-    //restore endpoint
-    public function restore($id)
+    public function restore($id, RestoreTaskFileAction $action)
     {
-        $task = File::onlyTrashed()->findOrFail($id);
-        $task->restore();
+        $action->execute($id);
 
         return response()->json(['message' => 'File restored successfully.']);
     }
+
+
 }

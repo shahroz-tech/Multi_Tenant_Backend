@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Project;
 use App\Models\Team;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -23,7 +24,8 @@ class TeamProjectSeeder extends Seeder
                 Project::factory()
                     ->count(3)
                     ->create([
-                        'team_id' => $team->id
+                        'team_id' => $team->id,
+                        'user_id' => User::inRandomOrder()->first()->id
                     ]);
             });
     }

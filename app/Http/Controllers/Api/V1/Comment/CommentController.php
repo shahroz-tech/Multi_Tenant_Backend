@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Api\V1\Comment;
 
-use App\Actions\Comment\CreateCommentAction;
+use App\Actions\Comment\StoreCommentAction;
+use App\Actions\Comment\DeleteCommentAction;
 use App\Events\CommentAddedEvent;
 use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
@@ -14,10 +15,10 @@ class CommentController extends Controller
 {
     public function index()
     {
-        return Comment::with('user', 'task')->get();
+        return auth()->user()->comments;
     }
 
-    public function store(Request $request, CreateCommentAction $storeComment)
+    public function store(Request $request, StoreCommentAction $storeComment)
     {
         $validated = $request->validate([
             "task_id" => "required|exists:tasks,id",
@@ -27,6 +28,17 @@ class CommentController extends Controller
         $storeComment->execute($validated);
 
         return response()->json(['message' => 'Comment created'], 201);
+    }
+
+    public function destroy(int $id, DeleteCommentAction $action)
+    {
+        $userId = auth()->id();
+
+        $action->execute($id, $userId);
+
+        return response()->json([
+            'message' => 'Comment deleted successfully.'
+        ]);
     }
 
     public function restore($id)
