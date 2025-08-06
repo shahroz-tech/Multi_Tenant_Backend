@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\V1\Task\TaskController;
 use App\Http\Controllers\Api\V1\Task\TaskFileController;
 use App\Http\Controllers\Api\V1\Team\TeamController;
 use App\Http\Controllers\Api\V1\User\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
@@ -52,6 +53,7 @@ Route::prefix('v1')->group(function () {
         //task routes | assign & upload, delete
         Route::get('tasks/search', [TaskController::class, 'search']);
         Route::post('/tasks/{task}/restore', [TaskController::class, 'restore']);
+        Route::post('/files/{file}', [TaskFileController::class, 'restore']);
         Route::apiResource('tasks', TaskController::class);
         Route::prefix('/tasks/{task}')->group(function () {
             Route::post('/assign', [TaskAssignController::class, 'assign']);

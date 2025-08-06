@@ -15,6 +15,9 @@ class RegisterUserAction
             'password' => Hash::make($data['password']),
         ]);
 
+        // Create Stripe customer via Laravel Cashier
+        $user->createAsStripeCustomer();
+
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return ['user' => $user, 'token' => $token];
