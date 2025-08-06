@@ -10,7 +10,7 @@ class ActivityLogController extends Controller
 {
     public function index($projectId)
     {
-        $logs = ActivityLog::where(function ($query) use ($projectId) {
+        $logs = ActivityLog::with('user')->where(function ($query) use ($projectId) {
             $query
 //                ->where('target_type', 'Project')
                 ->where('target_id', $projectId);

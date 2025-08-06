@@ -8,6 +8,7 @@ class UpdateProjectAction
     public function handle(Project $project, array $data): Project
     {
         $project->update($data);
+
         return $project;
     }
 }

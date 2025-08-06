@@ -2,6 +2,7 @@
 
 namespace App\Actions\Task\TaskFile;
 
+use App\Actions\Activity\LogActivityAction;
 use App\Models\ActivityLog;
 use App\Models\File;
 use App\Models\Task;
@@ -20,12 +21,6 @@ class UploadTaskFileAction
             'original_name' => $uploadedFile->getClientOriginalName(),
         ]);
 
-        ActivityLog::create([
-            'user_id' => Auth::id(),
-            'action_type' => 'uploaded',
-            'target_type' => 'File',
-            'target_id' => $file->id,
-        ]);
 
         return $file;
     }

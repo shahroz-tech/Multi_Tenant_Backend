@@ -20,7 +20,7 @@ class ProjectController extends Controller
 
     public function index()
     {
-        return auth()->user()->projects;
+        return auth()->user()->projects()->with('user','team','tasks')->get();
     }
 
     public function show(Request $request, Project $project)

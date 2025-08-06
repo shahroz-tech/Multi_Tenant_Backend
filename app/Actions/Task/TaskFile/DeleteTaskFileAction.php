@@ -2,6 +2,7 @@
 
 namespace App\Actions\Task\TaskFile;
 
+use App\Actions\Activity\LogActivityAction;
 use App\Models\ActivityLog;
 use App\Models\File;
 use App\Models\Task;
@@ -19,11 +20,6 @@ class DeleteTaskFileAction
         Storage::disk('public')->delete($file->file_path);
         $file->delete();
 
-        ActivityLog::create([
-            'user_id' => Auth::id(),
-            'action_type' => 'deleted',
-            'target_type' => 'File',
-            'target_id' => $file->id,
-        ]);
+
     }
 }

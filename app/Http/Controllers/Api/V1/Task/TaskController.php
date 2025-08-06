@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Validator;
 class TaskController extends Controller
 {
     public function index(){
-        return auth()->user()->tasks;
+        return auth()->user()->tasks()->with('project','users','comments','files')->get();
     }
 
     public function  show(Task $task)

@@ -7,6 +7,7 @@ class DeleteProjectAction
 {
     public function handle(Project $project): void
     {
+
         $project->delete();
     }
 }

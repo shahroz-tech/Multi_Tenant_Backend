@@ -8,6 +8,7 @@ use App\Events\CommentAddedEvent;
 use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
 use App\Models\Comment;
+use App\Services\ActivityLogService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,7 +16,7 @@ class CommentController extends Controller
 {
     public function index()
     {
-        return auth()->user()->comments;
+        return auth()->user()->comments()->with('user','task')->get();
     }
 
     public function store(Request $request, StoreCommentAction $storeComment)
@@ -26,7 +27,6 @@ class CommentController extends Controller
         ]);
 
         $storeComment->execute($validated);
-
         return response()->json(['message' => 'Comment created'], 201);
     }
 

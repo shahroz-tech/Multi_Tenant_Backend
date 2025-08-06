@@ -16,7 +16,7 @@ class TeamController extends Controller
 {
     public function index()
     {
-        return auth()->user()->teams;
+        return auth()->user()->teams()->with('users','owner','projects')->get();
     }
 
     public function store(Request $request, StoreTeamAction $action)
