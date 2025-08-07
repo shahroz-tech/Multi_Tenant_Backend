@@ -114,8 +114,21 @@ POST /api/v1/auth/login
 Response:
 ```json
 {
-    "user":{name,email...}
-  "token": "YOUR_TOKEN_HERE"
+  "message": "Login successful.",
+  "user": {
+    "deleted_at": null,
+    "id": 68,
+    "name": "Shahroz",
+    "email": "user@example.com",
+    "email_verified_at": null,
+    "created_at": "2025-08-06T05:45:04.000000Z",
+    "updated_at": "2025-08-06T05:45:04.000000Z",
+    "stripe_id": null,
+    "pm_type": null,
+    "pm_last_four": null,
+    "trial_ends_at": null
+  },
+  "token": "9|j7XihUoscBSCzFgeXcONqNxMmCk7a8DW5gJ08J2F95dd4d0a"
 }
 ```
 
