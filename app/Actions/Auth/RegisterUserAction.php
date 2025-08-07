@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Hash;
 
 class RegisterUserAction
 {
-    public function handle(array $data): array
+    public function handle(array $data)
     {
         $user = User::create([
             'name'     => $data['name'],
@@ -18,8 +18,6 @@ class RegisterUserAction
         // Create Stripe customer via Laravel Cashier
         $user->createAsStripeCustomer();
 
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return ['user' => $user, 'token' => $token];
+        return true;
     }
 }

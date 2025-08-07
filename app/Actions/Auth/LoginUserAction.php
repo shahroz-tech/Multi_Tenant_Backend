@@ -1,6 +1,8 @@
 <?php
 namespace App\Actions\Auth;
 
+use App\Models\RefreshToken;
+use App\Services\RefreshTokenService;
 use Illuminate\Support\Facades\Auth;
 
 class LoginUserAction
@@ -12,8 +14,13 @@ class LoginUserAction
         }
 
         $user = Auth::user();
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $accessToken = $user->createToken('auth_token')->plainTextToken;
 
-        return ['user' => $user, 'token' => $token];
+        $refreshToken = RefreshTokenService::generateRefreshToken($user);
+
+        return [
+            'access_token' => $accessToken,
+            'refresh_token' => $refreshToken,
+        ];
     }
 }

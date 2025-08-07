@@ -20,6 +20,7 @@ Route::prefix('v1')->group(function () {
     //auth route
     Route::controller(AuthController::class)->prefix('auth')->group(function () {
        Route::post("/login", "login")->name("login");
+        Route::post('/refresh', 'refresh');
        Route::post("/register", "register");
     });
 

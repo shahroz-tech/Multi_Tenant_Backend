@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1\Auth;
 
 use App\Actions\Auth\LoginUserAction;
 use App\Actions\Auth\LogoutUserAction;
+use App\Actions\Auth\RefreshTokenAction;
 use App\Actions\Auth\RegisterUserAction;
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -31,11 +32,14 @@ class AuthController extends Controller
 
         $result = $registerUser->handle($request->only('name', 'email', 'password'));
 
+        if(!$result) {
+            return response()->json(['error'=>'Something went wrong'], 500);
+
+        }
         return response()->json([
             'message' => 'User registered successfully.',
-            'user'    => $result['user'],
-            'token'   => $result['token'],
         ], 201);
+
     }
 
     public function login(Request $request, LoginUserAction $loginUser)
@@ -60,11 +64,25 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Login successful.',
-            'user'    => $result['user'],
-            'token'   => $result['token'],
+            'user'    => $result['access_token'],
+            'token'   => $result['refresh_token'],
         ], 200);
     }
 
+
+    public function refresh(Request $request, RefreshTokenAction $action)
+    {
+
+        $validate = Validator::make($request->all(), [
+            'refresh_token' => 'required',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json(['errors' => $validate->errors()], 422);
+        }
+
+        return $action->handle($request);
+    }
     public function logout(Request $request, LogoutUserAction $logoutUser)
     {
         $logoutUser->handle($request);

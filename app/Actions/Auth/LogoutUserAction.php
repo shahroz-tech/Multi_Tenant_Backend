@@ -7,6 +7,7 @@ class LogoutUserAction
 {
     public function handle(Request $request): void
     {
+
         $request->user()->currentAccessToken()->delete();
     }
 }

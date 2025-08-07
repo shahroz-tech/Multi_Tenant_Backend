@@ -73,4 +73,8 @@ class User extends Authenticatable
     public function projects(){
         return $this->hasMany(Project::class);
     }
+
+    public function refreshTokens(){
+        return $this->hasMany(RefreshToken::class);
+    }
 }
