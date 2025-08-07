@@ -8,7 +8,7 @@ This is a multi-tenant Laravel 12 application built with API endpoints only. It 
 - User invitation via email (stubbed)
 - Modular code structure using `Actions` and `Services`
 - Dockerized for consistent local development
-- Stripe integration (optional)
+- Stripe integration
 - Soft deletes and recovery
 - API token authentication
 
